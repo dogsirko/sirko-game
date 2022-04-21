@@ -37237,7 +37237,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var BLUE_SKY_COLOR = 0x64b0ff;
-var PINK_SKY_COLOR = 0xfbb4d4;
+var RED_SKY_COLOR = 0xdb0000;
 var SUCCESS_RATIO = 0.6;
 var BOTTOM_LINK_STYLE = {
   fontFamily: 'Arial',
@@ -37292,10 +37292,12 @@ var Game = function () {
       this.addLinkToLevelCreator();
       this.addPauseLink();
       this.addMuteLink();
+      this.addSubscribeToChannelLink();
       this.addFullscreenLink();
       this.bindEvents();
       this.startLevel();
       this.animate();
+      this.quackingSoundId = _Sound2.default.play('quacking');
     }
   }, {
     key: 'addFullscreenLink',
@@ -37308,7 +37310,7 @@ var Game = function () {
           y: 1
         }
       });
-      this.stage.hud.fullscreenLink = 'fullscreen (f)';
+      this.stage.hud.fullscreenLink = 'экран (f)';
     }
   }, {
     key: 'addMuteLink',
@@ -37321,7 +37323,20 @@ var Game = function () {
           y: 1
         }
       });
-      this.stage.hud.muteLink = 'mute (m)';
+      this.stage.hud.muteLink = 'звук (m)';
+    }
+  }, {
+    key: 'addSubscribeToChannelLink',
+    value: function addSubscribeToChannelLink() {
+      this.stage.hud.createTextBox('subscribeToChannel', {
+        style: BOTTOM_LINK_STYLE,
+        location: _Stage2.default.subscribeToChannelBoxLocation(),
+        anchor: {
+          x: 1,
+          y: 1
+        }
+      });
+      this.stage.hud.subscribeToChannel = 'Подписаться на ТГ канал';
     }
   }, {
     key: 'addPauseLink',
@@ -37334,7 +37349,7 @@ var Game = function () {
           y: 1
         }
       });
-      this.stage.hud.pauseLink = 'pause (p)';
+      this.stage.hud.pauseLink = 'пауза (p)';
     }
   }, {
     key: 'addLinkToLevelCreator',
@@ -37347,7 +37362,7 @@ var Game = function () {
           y: 1
         }
       });
-      this.stage.hud.levelCreatorLink = 'level creator (c)';
+      this.stage.hud.levelCreatorLink = 'создать лвл (c)';
     }
   }, {
     key: 'bindEvents',
@@ -37380,9 +37395,9 @@ var Game = function () {
 
       document.addEventListener('fullscreenchange', function () {
         if (document.fullscreenElement) {
-          _this.stage.hud.fullscreenLink = 'unfullscreen (f)';
+          _this.stage.hud.fullscreenLink = 'экран (f)';
         } else {
-          _this.stage.hud.fullscreenLink = 'fullscreen (f)';
+          _this.stage.hud.fullscreenLink = 'экран (f)';
         }
       });
 
@@ -37405,7 +37420,7 @@ var Game = function () {
     value: function pause() {
       var _this2 = this;
 
-      this.stage.hud.pauseLink = this.paused ? 'pause (p)' : 'unpause (p)';
+      this.stage.hud.pauseLink = this.paused ? 'пауза (p)' : 'возобновить (p)';
       // SetTimeout, woof. Thing is here we need to leave enough animation frames for the HUD status to be updated
       // before pausing all rendering, otherwise the text update we need above won't be shown to the user.
       setTimeout(function () {
@@ -37435,8 +37450,9 @@ var Game = function () {
   }, {
     key: 'mute',
     value: function mute() {
-      this.stage.hud.muteLink = this.muted ? 'mute (m)' : 'unmute (m)';
+      this.stage.hud.muteLink = 'звук (m)';
       this.muted = !this.muted;
+
       _Sound2.default.mute(this.muted);
     }
   }, {
@@ -37471,7 +37487,6 @@ var Game = function () {
   }, {
     key: 'startWave',
     value: function startWave() {
-      this.quackingSoundId = _Sound2.default.play('quacking');
       this.wave += 1;
       this.waveStartTime = Date.now();
       this.bullets = this.level.bullets;
@@ -37485,10 +37500,10 @@ var Game = function () {
     value: function endWave() {
       this.waveEnding = true;
       this.bullets = 0;
-      _Sound2.default.stop(this.quackingSoundId);
+
       if (this.stage.ducksAlive()) {
         this.ducksMissed += this.level.ducks - this.ducksShotThisWave;
-        this.renderer.backgroundColor = PINK_SKY_COLOR;
+        this.renderer.backgroundColor = RED_SKY_COLOR;
         this.stage.flyAway().then(this.goToNextWave.bind(this));
       } else {
         this.stage.cleanUpDucks();
@@ -37557,14 +37572,14 @@ var Game = function () {
     key: 'win',
     value: function win() {
       _Sound2.default.play('champ');
-      this.gameStatus = 'You Win!';
+      this.gameStatus = 'Ты выиграл!';
       this.showReplay(this.getScoreMessage());
     }
   }, {
     key: 'loss',
     value: function loss() {
       _Sound2.default.play('loserSound');
-      this.gameStatus = 'You Lose!';
+      this.gameStatus = 'Ты проиграл!';
       this.showReplay(this.getScoreMessage());
     }
   }, {
@@ -37575,27 +37590,27 @@ var Game = function () {
       var percentage = this.score / this.maxScore * 100;
 
       if (percentage === 100) {
-        scoreMessage = 'Flawless victory.';
+        scoreMessage = 'Ты лучший!';
       }
 
       if (percentage < 100) {
-        scoreMessage = 'Close to perfection.';
+        scoreMessage = 'Ну еще чучуть.';
       }
 
       if (percentage <= 95) {
-        scoreMessage = 'Truly impressive score.';
+        scoreMessage = 'Молодец, так держать.';
       }
 
       if (percentage <= 85) {
-        scoreMessage = 'Solid score.';
+        scoreMessage = 'Неплохо, неплохо.';
       }
 
       if (percentage <= 75) {
-        scoreMessage = 'Participation award.';
+        scoreMessage = 'Пойдет.';
       }
 
       if (percentage <= 63) {
-        scoreMessage = 'Yikes.';
+        scoreMessage = 'Ну... такое.';
       }
 
       return scoreMessage;
@@ -37606,7 +37621,7 @@ var Game = function () {
       this.stage.hud.createTextBox('replayButton', {
         location: _Stage2.default.replayButtonLocation()
       });
-      this.stage.hud.replayButton = replayText + ' Play Again?';
+      this.stage.hud.replayButton = replayText + ' Сыграем еще раз?';
     }
   }, {
     key: 'openLevelCreator',
@@ -37616,6 +37631,15 @@ var Game = function () {
         this.pause();
       }
       window.open('/creator.html', '_blank');
+    }
+  }, {
+    key: 'openSubscribeToChannelLink',
+    value: function openSubscribeToChannelLink() {
+      // If they didn't pause the game, pause it for them
+      if (!this.paused) {
+        this.pause();
+      }
+      window.open('https://t.me/+Un73RSpyVZhjMTFi');
     }
   }, {
     key: 'handleClick',
@@ -37642,6 +37666,11 @@ var Game = function () {
 
       if (this.stage.clickedLevelCreatorLink(clickPoint)) {
         this.openLevelCreator();
+        return;
+      }
+
+      if (this.stage.clickedSuscribeToChannelLink(clickPoint)) {
+        this.openSubscribeToChannelLink();
         return;
       }
 
@@ -37845,7 +37874,7 @@ var Game = function () {
         }
 
         if (!isNaN(val) && val > 0) {
-          this.stage.hud.waveStatus = 'wave ' + val + ' of ' + this.level.waves;
+          this.stage.hud.waveStatus = 'волна ' + val + ' из ' + this.level.waves;
         } else {
           this.stage.hud.waveStatus = '';
         }
@@ -38011,10 +38040,10 @@ var Dog = function (_Character) {
       loop: false
     }, {
       name: 'laugh',
-      animationSpeed: 0.1
+      animationSpeed: 0.2
     }, {
       name: 'sniff',
-      animationSpeed: 0.1
+      animationSpeed: 0.25
     }];
 
     var _this = _possibleConstructorReturn(this, (Dog.__proto__ || Object.getPrototypeOf(Dog)).call(this, 'dog', options.spritesheet, states));
@@ -38317,28 +38346,35 @@ var Duck = function (_Character) {
     var spriteId = 'duck/' + options.colorProfile;
     var states = [{
       name: 'left',
-      animationSpeed: 0.18
+      animationSpeed: 0.03
 
     }, {
       name: 'right',
-      animationSpeed: 0.18
+      animationSpeed: 0.03
 
     }, {
       name: 'top-left',
-      animationSpeed: 0.18
+      animationSpeed: 0.01
 
     }, {
       name: 'top-right',
-      animationSpeed: 0.18
+      animationSpeed: 0.01
 
     }, {
       name: 'dead',
-      animationSpeed: 0.18
-
+      animationSpeed: 0.1
     }, {
-      name: 'shot',
+      name: 'left-shot',
       animationSpeed: 0.18
-
+    }, {
+      name: 'right-shot',
+      animationSpeed: 0.18
+    }, {
+      name: 'top-left-shot',
+      animationSpeed: 0.18
+    }, {
+      name: 'top-right-shot',
+      animationSpeed: 0.18
     }];
 
     var _this = _possibleConstructorReturn(this, (Duck.__proto__ || Object.getPrototypeOf(Duck)).call(this, spriteId, options.spritesheet, states));
@@ -38455,8 +38491,8 @@ var Duck = function (_Character) {
 
       this.stopAndClearTimeline();
       this.timeline.add(function () {
-        _this3.state = 'shot';
-        _Sound2.default.play('quak', _util.noop);
+        _this3.state = _this3.state + '-shot';
+        //sound.play('quak', _noop);
       });
 
       this.timeline.to(this.position, DEATH_ANIMATION_SECONDS, {
@@ -38745,12 +38781,13 @@ var DUCK_POINTS = {
 };
 var DOG_POINTS = {
   DOWN: new _pixi.Point(MAX_X / 2, MAX_Y),
-  UP: new _pixi.Point(MAX_X / 2, MAX_Y - 230),
-  SNIFF_START: new _pixi.Point(0, MAX_Y - 130),
-  SNIFF_END: new _pixi.Point(MAX_X / 2, MAX_Y - 130)
+  UP: new _pixi.Point(MAX_X / 2, MAX_Y - 250),
+  SNIFF_START: new _pixi.Point(0, MAX_Y - 100),
+  SNIFF_END: new _pixi.Point(MAX_X / 2, MAX_Y - 100)
 };
 var HUD_LOCATIONS = {
   SCORE: new _pixi.Point(MAX_X - 10, 10),
+  SUBSCRIBE_TO_CHANNEL_LINK: new _pixi.Point(MAX_X - 450, MAX_Y - 10),
   WAVE_STATUS: new _pixi.Point(MAX_X - 11, MAX_Y - 30),
   LEVEL_CREATOR_LINK: new _pixi.Point(MAX_X - 11, MAX_Y - 10),
   FULL_SCREEN_LINK: new _pixi.Point(MAX_X - 130, MAX_Y - 10),
@@ -38848,8 +38885,8 @@ var Stage = function (_Container) {
       var tree = new _pixi.extras.AnimatedSprite([_pixi.loader.resources[this.spritesheet].textures['scene/tree/0.png']]);
       var chornobaevka = new _pixi.extras.AnimatedSprite([_pixi.loader.resources[this.spritesheet].textures['scene/bar/0.png']]);
 
-      tree.position.set(-90, 195);
-      chornobaevka.position.set(535, 250);
+      tree.position.set(-70, 170);
+      chornobaevka.position.set(535, 240);
 
       this.addChild(tree);
       this.addChild(chornobaevka);
@@ -38970,6 +39007,14 @@ var Stage = function (_Container) {
 
       // with this link we have a very narrow hit box, radius search is not appropriate
       return (0, _number.inRange)(scaledClickPoint.x, HUD_LOCATIONS.LEVEL_CREATOR_LINK.x - 110, HUD_LOCATIONS.LEVEL_CREATOR_LINK.x) && (0, _number.inRange)(scaledClickPoint.y, HUD_LOCATIONS.LEVEL_CREATOR_LINK.y - 30, HUD_LOCATIONS.LEVEL_CREATOR_LINK.y + 10);
+    }
+  }, {
+    key: 'clickedSuscribeToChannelLink',
+    value: function clickedSuscribeToChannelLink(clickPoint) {
+      var scaledClickPoint = this.getScaledClickLocation(clickPoint);
+
+      // with this link we have a very narrow hit box, radius search is not appropriate
+      return (0, _number.inRange)(scaledClickPoint.x, HUD_LOCATIONS.SUBSCRIBE_TO_CHANNEL_LINK.x - 200, HUD_LOCATIONS.SUBSCRIBE_TO_CHANNEL_LINK.x) && (0, _number.inRange)(scaledClickPoint.y, HUD_LOCATIONS.SUBSCRIBE_TO_CHANNEL_LINK.y - 30, HUD_LOCATIONS.SUBSCRIBE_TO_CHANNEL_LINK.y + 10);
     }
   }, {
     key: 'clickedPauseLink',
@@ -39139,6 +39184,11 @@ var Stage = function (_Container) {
     key: 'scoreBoxLocation',
     value: function scoreBoxLocation() {
       return HUD_LOCATIONS.SCORE;
+    }
+  }, {
+    key: 'subscribeToChannelBoxLocation',
+    value: function subscribeToChannelBoxLocation() {
+      return HUD_LOCATIONS.SUBSCRIBE_TO_CHANNEL_LINK;
     }
   }, {
     key: 'waveStatusBoxLocation',
@@ -48882,13 +48932,13 @@ const TweenMaxBase = TweenMax;
 /* 324 */
 /***/ (function(module, exports) {
 
-module.exports = {"src":["audio.ogg","audio.mp3"],"sprite":{"barkDucks":[0,2699.9773242630386],"champ":[4000,9639.183673469388],"gunSound":[15000,504.01360544217687],"laugh":[17000,2299.97732426304],"loserSound":[21000,3300.000000000001],"ohYeah":[26000,1071.020408163264],"quacking":[29000,6817.959183673466,true],"quak":[37000,3065.034013605441],"sniff":[42000,1985.306122448982,true],"thud":[45000,548.571428571428]}}
+module.exports = {"src":["audio.ogg","audio.mp3"],"sprite":{"barkDucks":[0,2699.9773242630386],"champ":[4000,28400],"gunSound":[34000,1399.9999999999986],"laugh":[37000,2299.97732426304],"loserSound":[41000,3299.9999999999973],"ohYeah":[46000,1071.020408163264],"quacking":[49000,483400,true],"sniff":[534000,4699.977324263045,true]}}
 
 /***/ }),
 /* 325 */
 /***/ (function(module, exports) {
 
-module.exports = {"normal":[{"id":1,"title":"Level 1","waves":3,"ducks":2,"pointsPerDuck":100,"speed":5,"bullets":3,"radius":60,"time":13},{"id":2,"title":"Level 2","waves":5,"ducks":3,"pointsPerDuck":100,"speed":6,"bullets":4,"radius":60,"time":10},{"id":3,"title":"Level 3","waves":6,"ducks":3,"pointsPerDuck":100,"speed":7,"bullets":4,"radius":60,"time":10},{"id":4,"title":"Level 4","waves":3,"ducks":10,"pointsPerDuck":100,"speed":7,"bullets":11,"radius":60,"time":18},{"id":5,"title":"Level 5","waves":5,"ducks":2,"pointsPerDuck":100,"speed":8,"bullets":3,"radius":60,"time":13},{"id":6,"title":"Level 6","waves":1,"ducks":15,"pointsPerDuck":100,"speed":8,"bullets":15,"radius":60,"time":25}]}
+module.exports = {"normal":[{"id":1,"title":"Уровень 1","waves":3,"ducks":2,"pointsPerDuck":100,"speed":5,"bullets":3,"radius":60,"time":13},{"id":2,"title":"Уровень 2","waves":5,"ducks":3,"pointsPerDuck":100,"speed":6,"bullets":4,"radius":60,"time":10},{"id":3,"title":"Уровень 3","waves":6,"ducks":3,"pointsPerDuck":100,"speed":7,"bullets":4,"radius":60,"time":10},{"id":4,"title":"Уровень 4","waves":3,"ducks":10,"pointsPerDuck":100,"speed":7,"bullets":11,"radius":60,"time":18},{"id":5,"title":"Уровень 5","waves":5,"ducks":2,"pointsPerDuck":100,"speed":8,"bullets":3,"radius":60,"time":13},{"id":6,"title":"Уровень 6","waves":1,"ducks":15,"pointsPerDuck":100,"speed":8,"bullets":15,"radius":60,"time":25}]}
 
 /***/ }),
 /* 326 */
