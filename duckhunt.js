@@ -37931,7 +37931,7 @@ function parseQueryParamAsInt(param) {
 module.exports.parseLevelQueryString = function () {
   return {
     id: -1,
-    title: urlQueryString.get('title') || 'Generated Level',
+    title: urlQueryString.get('title') || 'Сгенерированный уровень',
     waves: parseQueryParamAsInt('waves') || 1,
     ducks: parseQueryParamAsInt('ducks') || 1,
     pointsPerDuck: parseQueryParamAsInt('points') || 100,
@@ -38467,7 +38467,7 @@ var Duck = function (_Character) {
           _this3.state = 'dead';
         },
         onComplete: function onComplete() {
-          _Sound2.default.play('thud', _util.noop);
+          //sound.play('thud', _noop);
           _this3.visible = false;
         }
       });
