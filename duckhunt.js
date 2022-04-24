@@ -37630,7 +37630,7 @@ var Game = function () {
       if (!this.paused) {
         this.pause();
       }
-      window.open(window.location.href + 'creator.html', '_blank');
+      window.open(window.location.pathname + 'creator.html', '_blank');
     }
   }, {
     key: 'openSubscribeToChannelLink',
