@@ -37574,7 +37574,6 @@ var Game = function () {
       _Sound2.default.play('champ');
       this.gameStatus = 'Ты выиграл!';
       this.showReplay(this.getScoreMessage());
-      TelegramGameProxy.shareScore();
     }
   }, {
     key: 'loss',
@@ -37582,7 +37581,6 @@ var Game = function () {
       _Sound2.default.play('loserSound');
       this.gameStatus = 'Ты проиграл!';
       this.showReplay(this.getScoreMessage());
-      TelegramGameProxy.shareScore();
     }
   }, {
     key: 'getScoreMessage',
