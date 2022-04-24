@@ -37292,7 +37292,7 @@ var Game = function () {
       this.addLinkToLevelCreator();
       this.addPauseLink();
       this.addMuteLink();
-      this.addSubscribeToChannelLink();
+      //this.addSubscribeToChannelLink();
       this.addFullscreenLink();
       this.bindEvents();
       this.startLevel();
@@ -37669,10 +37669,10 @@ var Game = function () {
         return;
       }
 
-      if (this.stage.clickedSuscribeToChannelLink(clickPoint)) {
-        this.openSubscribeToChannelLink();
-        return;
-      }
+      // if (this.stage.clickedSuscribeToChannelLink(clickPoint)) {
+      //   this.openSubscribeToChannelLink();
+      //   return;
+      // }
 
       if (!this.stage.hud.replayButton && !this.outOfAmmo() && !this.shouldWaveEnd() && !this.paused) {
         _Sound2.default.play('gunSound');
