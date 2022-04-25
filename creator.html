@@ -110,6 +110,7 @@
                                                        placeholder="1-10" value="6" required></div>
         <div><label for="time">время на волну:</label> <input type="number" id="time" name="time" min="10" max="120"
                                                     placeholder="10-120" value="30"></div>
+        <input type="hidden" id="radius" name="isCustom" id="isCustom" value="true" />
     </div>
     <br><br>
     <button type="submit">Создать уровень</button>
@@ -117,9 +118,9 @@
 
 <h2>Легендарные уровни</h2>
 <ul>
-    <li><a href="index.html?title=10+на+10&waves=10&ducks=1&points=1&bullets=1&radius=30&speed=10&time=10">10 на 10</a></li>
-    <li><a href="index.html?title=Литакы+Лэтять&waves=5&ducks=2&points=100&bullets=1&radius=100&speed=6&time=30">Литакы Лэтять</a></li>
-    <li><a href="index.html?title=Марафон&waves=26&ducks=2&points=100&bullets=2&radius=60&speed=6&time=5">Марафон</a></li>
+    <li><a href="index.html?isCustom=true&title=10+на+10&waves=10&ducks=1&points=1&bullets=1&radius=30&speed=10&time=10">10 на 10</a></li>
+    <li><a href="index.html?isCustom=true&title=Литакы+Лэтять&waves=5&ducks=2&points=100&bullets=1&radius=100&speed=6&time=30">Литакы Лэтять</a></li>
+    <li><a href="index.html?isCustom=true&title=Марафон&waves=26&ducks=2&points=100&bullets=2&radius=60&speed=6&time=5">Марафон</a></li>
 </ul>
 </body>
 </html>
