@@ -37598,7 +37598,7 @@ var Game = function () {
 
       var params = 'data=' + data + '&score=' + this.score;
 
-      xhr.open("POST", 'http://localhost:5059/api/score?' + params, true);
+      xhr.open("POST", 'https://telegrambotgame-airfighterhunt.herokuapp.com/api/score?' + params, true);
 
       xhr.send();
     }
