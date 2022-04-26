@@ -37574,6 +37574,7 @@ var Game = function () {
       _Sound2.default.play('champ');
       this.gameStatus = 'Ты выиграл!';
       this.showReplay(this.getScoreMessage());
+      this.shareScore();
     }
   }, {
     key: 'loss',
@@ -37581,6 +37582,25 @@ var Game = function () {
       _Sound2.default.play('loserSound');
       this.gameStatus = 'Ты проиграл!';
       this.showReplay(this.getScoreMessage());
+      this.shareScore();
+    }
+  }, {
+    key: 'shareScore',
+    value: function shareScore() {
+      var xhr = new XMLHttpRequest();
+
+      var urlQueryString = new URLSearchParams(window.location.search);
+      var data = urlQueryString.get('data') || '';
+
+      if (!data) {
+        return;
+      }
+
+      var params = 'data=' + data + '&score=' + this.score;
+
+      xhr.open("POST", 'http://localhost:5059/api/score?' + params, true);
+
+      xhr.send();
     }
   }, {
     key: 'getScoreMessage',
