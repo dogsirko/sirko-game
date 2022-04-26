@@ -37580,7 +37580,7 @@ var Game = function () {
     key: 'loss',
     value: function loss() {
       _Sound2.default.play('loserSound');
-      this.gameStatus = 'Ты проиграл!';
+      this.gameStatus = 'Ну ты это, заходи если что...';
       this.showReplay(this.getScoreMessage());
       this.shareScore();
     }
@@ -37605,35 +37605,7 @@ var Game = function () {
   }, {
     key: 'getScoreMessage',
     value: function getScoreMessage() {
-      var scoreMessage = void 0;
-
-      var percentage = this.score / this.maxScore * 100;
-
-      if (percentage === 100) {
-        scoreMessage = 'Ты лучший!';
-      }
-
-      if (percentage < 100) {
-        scoreMessage = 'Ну еще чучуть.';
-      }
-
-      if (percentage <= 95) {
-        scoreMessage = 'Молодец, так держать.';
-      }
-
-      if (percentage <= 85) {
-        scoreMessage = 'Неплохо, неплохо.';
-      }
-
-      if (percentage <= 75) {
-        scoreMessage = 'Пойдет.';
-      }
-
-      if (percentage <= 63) {
-        scoreMessage = 'Ну... такое.';
-      }
-
-      return scoreMessage;
+      return "Количество очков: " + this.score;
     }
   }, {
     key: 'showReplay',
