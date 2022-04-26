@@ -37613,7 +37613,7 @@ var Game = function () {
       this.stage.hud.createTextBox('replayButton', {
         location: _Stage2.default.replayButtonLocation()
       });
-      this.stage.hud.replayButton = replayText + ' Сыграем еще раз?';
+      this.stage.hud.replayButton = replayText + ' \nСыграем еще раз?';
     }
   }, {
     key: 'openLevelCreator',
