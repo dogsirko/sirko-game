@@ -37628,15 +37628,6 @@ var Game = function () {
       window.open(url, '_blank');
     }
   }, {
-    key: 'openSubscribeToChannelLink',
-    value: function openSubscribeToChannelLink() {
-      // If they didn't pause the game, pause it for them
-      if (!this.paused) {
-        this.pause();
-      }
-      window.open('https://t.me/+Un73RSpyVZhjMTFi');
-    }
-  }, {
     key: 'handleClick',
     value: function handleClick(event) {
       var clickPoint = {
@@ -37663,11 +37654,6 @@ var Game = function () {
         this.openLevelCreator();
         return;
       }
-
-      // if (this.stage.clickedSuscribeToChannelLink(clickPoint)) {
-      //   this.openSubscribeToChannelLink();
-      //   return;
-      // }
 
       if (!this.stage.hud.replayButton && !this.outOfAmmo() && !this.shouldWaveEnd() && !this.paused) {
         _Sound2.default.play('gunSound');
@@ -38768,15 +38754,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MAX_X = 800;
-var MAX_Y = 600;
+var MAX_X = 1280;
+var MAX_Y = 720;
 
 var DUCK_POINTS = {
   ORIGIN: new _pixi.Point(MAX_X / 2, MAX_Y)
 };
 var DOG_POINTS = {
   DOWN: new _pixi.Point(MAX_X / 2, MAX_Y),
-  UP: new _pixi.Point(MAX_X / 2, MAX_Y - 250),
+  UP: new _pixi.Point(MAX_X / 2, MAX_Y - 275),
   SNIFF_START: new _pixi.Point(0, MAX_Y - 100),
   SNIFF_END: new _pixi.Point(MAX_X / 2, MAX_Y - 100)
 };
@@ -38875,13 +38861,13 @@ var Stage = function (_Container) {
     key: '_setStage',
     value: function _setStage() {
       var background = new _pixi.extras.AnimatedSprite([_pixi.loader.resources[this.spritesheet].textures['scene/back/0.png']]);
-      background.position.set(0, 15);
+      background.position.set(0, 1);
 
       var tree = new _pixi.extras.AnimatedSprite([_pixi.loader.resources[this.spritesheet].textures['scene/tree/0.png']]);
       var chornobaevka = new _pixi.extras.AnimatedSprite([_pixi.loader.resources[this.spritesheet].textures['scene/bar/0.png']]);
 
-      tree.position.set(-70, 170);
-      chornobaevka.position.set(535, 240);
+      tree.position.set(-50, MAX_Y - 560);
+      chornobaevka.position.set(MAX_X - 250, MAX_Y - 305);
 
       this.addChild(tree);
       this.addChild(chornobaevka);
@@ -38935,12 +38921,12 @@ var Stage = function (_Container) {
     key: 'addDucks',
     value: function addDucks(numDucks, speed) {
       for (var i = 0; i < numDucks; i++) {
-        var duckColor = i % 2 === 0 ? 'red' : 'black';
+        //const duckColor = i % 2 === 0 ? 'red' : ;
 
         // Al was here.
         var newDuck = new _Duck2.default({
           spritesheet: this.spritesheet,
-          colorProfile: duckColor,
+          colorProfile: 'black',
           maxX: MAX_X,
           maxY: MAX_Y
         });
