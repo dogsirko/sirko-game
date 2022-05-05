@@ -37288,11 +37288,9 @@ var Game = function () {
         spritesheet: this.spritesheet
       });
 
-      this.scaleToWindow();
       this.addLinkToLevelCreator();
       this.addPauseLink();
       this.addMuteLink();
-      //this.addSubscribeToChannelLink();
       this.addFullscreenLink();
       this.bindEvents();
       this.startLevel();
@@ -37370,6 +37368,7 @@ var Game = function () {
       var _this = this;
 
       window.addEventListener('resize', this.scaleToWindow.bind(this));
+      window.addEventListener('orientationchange', this.scaleToWindow.bind(this));
 
       this.stage.mousedown = this.stage.touchstart = this.handleClick.bind(this);
 
@@ -38928,7 +38927,7 @@ var Stage = function (_Container) {
           spritesheet: this.spritesheet,
           colorProfile: 'black',
           maxX: MAX_X,
-          maxY: MAX_Y
+          maxY: MAX_Y - 150
         });
         newDuck.position.set(DUCK_POINTS.ORIGIN.x, DUCK_POINTS.ORIGIN.y);
         this.addChildAt(newDuck, 0);
