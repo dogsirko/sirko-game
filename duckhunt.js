@@ -37458,7 +37458,7 @@ var Game = function () {
   }, {
     key: 'scaleToWindow',
     value: function scaleToWindow() {
-      this.renderer.resize(window.outerWidth, window.outerHeight);
+      this.renderer.resize(window.innerWidth, window.innerHeight);
       this.stage.scaleToWindow();
     }
   }, {
@@ -38847,7 +38847,7 @@ var Stage = function (_Container) {
   }, {
     key: 'scaleToWindow',
     value: function scaleToWindow() {
-      this.scale.set(window.outerWidth / MAX_X, window.outerHeight / MAX_Y);
+      this.scale.set(window.innerWidth / MAX_X, window.innerHeight / MAX_Y);
     }
 
     /**
